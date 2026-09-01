@@ -17,8 +17,9 @@ import {
   readDirectory,
 } from "./csv.mjs";
 
-const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const config = JSON.parse(readFileSync(join(repoRoot, "config.json"), "utf8"));
+const toolsDir = dirname(fileURLToPath(import.meta.url));
+const repoRoot = resolve(toolsDir, "..");
+const config = JSON.parse(readFileSync(join(toolsDir, "config.json"), "utf8"));
 const csvPath = join(repoRoot, config.csvFile);
 const raw = readFileSync(csvPath, "utf8");
 const problems = [];
@@ -31,7 +32,7 @@ if (!raw.endsWith("\n")) problems.push(`${config.csvFile}: must end with a newli
 
 // The filename carries the registry generation; the address it maps to lives in config.json.
 if (!/^odp-directory-v\d+\.\d+\.csv$/.test(config.csvFile)) {
-  problems.push(`config.json: csvFile "${config.csvFile}" does not match odp-directory-v<MAJOR>.<MINOR>.csv`);
+  problems.push(`tools/config.json: csvFile "${config.csvFile}" does not match odp-directory-v<MAJOR>.<MINOR>.csv`);
 }
 
 const entries = readDirectory(csvPath);

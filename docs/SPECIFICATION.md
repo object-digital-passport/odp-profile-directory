@@ -37,7 +37,7 @@ are the profile ID, the registry it belongs to, and `evidenceUrl`.
 
 The CSV filename **MUST** be `odp-directory-v<MAJOR>.<MINOR>.csv`, naming the registry
 generation its rows belong to. One file describes exactly one registry deployment; the chain ID
-and contract address for it **MUST** be recorded in `config.json` and carried into the built
+and contract address for it **MUST** be recorded in `tools/config.json` and carried into the built
 `directory.json`.
 
 A profile ID is meaningless without its registry: the same wallet receives a **different**

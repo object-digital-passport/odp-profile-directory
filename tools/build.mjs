@@ -10,8 +10,9 @@ import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 import { readDirectory } from "./csv.mjs";
 
-const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const config = JSON.parse(readFileSync(join(repoRoot, "config.json"), "utf8"));
+const toolsDir = dirname(fileURLToPath(import.meta.url));
+const repoRoot = resolve(toolsDir, "..");
+const config = JSON.parse(readFileSync(join(toolsDir, "config.json"), "utf8"));
 const entries = readDirectory(join(repoRoot, config.csvFile));
 
 const instants = [];

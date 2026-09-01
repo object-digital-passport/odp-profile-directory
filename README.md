@@ -1,6 +1,6 @@
 # ODP Profile Directory
 
-🇬🇧 English · 🇷🇺 [Русский](README.ru.md)
+🇬🇧 English · 🇷🇺 [Русский](docs/README.ru.md)
 
 **A CSV format for listing Object Digital Passport profile IDs whose owners published them on
 their own website — and an example file you can copy.**
@@ -42,7 +42,7 @@ reuse — and the expected way to use it is **not** to depend on this file, but 
 
 Fork it, delete every row, and you have a working directory for your project:
 
-1. Point `config.json` at the registry you verify against (`chainId`, `registryAddress`,
+1. Point `tools/config.json` at the registry you verify against (`chainId`, `registryAddress`,
    `csvFile` named for that generation).
 2. Add your own rows, with your own admission rules. Stricter than this one, looser, or an
    entirely closed list of partners you already have contracts with — your call.
@@ -55,7 +55,7 @@ about who is worth showing — and it is healthier for there to be many, run by 
 reputations differ, than one that quietly becomes the authority.
 
 The only thing that is not yours to redefine is what a directory may **claim**. The status
-rules in [SPECIFICATION.md](SPECIFICATION.md) exist so that a user moving between two apps
+rules in [SPECIFICATION.md](docs/SPECIFICATION.md) exist so that a user moving between two apps
 reading two different directories is not shown "unreachable" as an accusation in one and as
 silence in the other. Keep those, change everything else.
 
@@ -65,9 +65,9 @@ silence in the other. Keep those, change everything else.
 |:--|:--|
 | `odp-directory-v0.6.csv` | The directory. One row per profile ID. Hand-editable. |
 | `directory.json` | The same data as JSON, built by CI. **Read this one from an app.** |
-| `config.json` | Which registry the file describes: chain, address, spec line, thresholds. |
-| `SPECIFICATION.md` | The format, normatively. Excerpted from the ODP specification. |
-| `tools/`, `state/` | The re-checking bot and its bookkeeping. |
+| `tools/config.json` | Which registry the file describes: chain, address, spec line, thresholds. |
+| `docs/SPECIFICATION.md` | The format, normatively. Excerpted from the ODP specification. |
+| `tools/` | The re-checking bot and its bookkeeping. |
 
 The filename carries the registry generation (`v0.6`). A profile ID means nothing without the
 registry that issued it — the same wallet gets a **different** ID in a different deployment. When
@@ -91,7 +91,7 @@ v1 ships, a second CSV appears beside this one; nothing is rewritten.
 | 12 | `addedAt` | When the row entered the file. |
 
 Deliberately **absent**: parent/child links (read `getAffiliatedParent` from the contract — this
-file would go stale), chain and registry address (they are in `config.json` and the filename),
+file would go stale), chain and registry address (they are in `tools/config.json` and the filename),
 and the wallet (read `getCreator` from the contract).
 
 ## What an application must do with `status`
@@ -143,7 +143,7 @@ manual mode with a snapshot, and goes stale after 183 days.
 
 1. Publish your profile ID and wallet on your own site, per `SPEC.md` §3.
 2. Add `/.well-known/odp.json` to that domain.
-3. Open a pull request adding one row. See [CONTRIBUTING.md](CONTRIBUTING.md).
+3. Open a pull request adding one row. See [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 Anyone may open a PR for any profile — the evidence is public either way. A maintainer merges
 after checking the domain is the real one and CI passes.
@@ -160,5 +160,5 @@ Node 22+, no dependencies.
 
 ## Licence
 
-Data (`odp-directory-v0.6.csv`, `directory.json`) — [CC0 1.0](LICENSE-DATA).
-Everything else — [MIT](LICENSE-CODE).
+Data (`odp-directory-v0.6.csv`, `directory.json`) — [CC0 1.0](LICENSE).
+Everything else — [MIT](LICENSE).

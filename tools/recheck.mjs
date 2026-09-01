@@ -13,10 +13,11 @@ import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 import { readDirectory, writeDirectory } from "./csv.mjs";
 
-const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const config = JSON.parse(readFileSync(join(repoRoot, "config.json"), "utf8"));
+const toolsDir = dirname(fileURLToPath(import.meta.url));
+const repoRoot = resolve(toolsDir, "..");
+const config = JSON.parse(readFileSync(join(toolsDir, "config.json"), "utf8"));
 const csvPath = join(repoRoot, config.csvFile);
-const statePath = join(repoRoot, "state", "recheck-state.json");
+const statePath = join(toolsDir, "state", "recheck-state.json");
 const dryRun = process.argv.includes("--dry-run");
 const only = process.argv.find((a) => a.startsWith("--only="))?.slice("--only=".length);
 
