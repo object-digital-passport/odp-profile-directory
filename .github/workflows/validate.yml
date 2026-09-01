@@ -1,0 +1,25 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  csv:
+    name: directory format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      # Every rule the format states, on every pull request — a directory people are asked
+      # to trust cannot be the one file nobody checks.
+      - run: node tools/validate.mjs
+      - run: node tools/build.mjs --check

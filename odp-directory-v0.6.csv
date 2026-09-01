@@ -1,0 +1,7 @@
+profileId,profileType,displayName,evidenceKind,evidenceUrl,evidenceHost,checkMethod,status,lastCheckedAt,lastVerifiedAt,archiveUrl,addedAt
+B-029-384-751-224,B,Example Brand,website,https://example.com/about/digital-passport,example.com,auto,active,2026-09-01T04:17:00Z,2026-08-12,,2026-08-12
+B-118-002-940-333,B,Example Brand Originals,website,https://originals.example.com/odp,originals.example.com,auto,removed,2026-09-01T04:17:11Z,2026-08-14,,2026-08-14
+C-482-930-174-005,C,Example Artist,social,https://social.example.net/@example-artist,social.example.net,manual,active,,2026-07-30,https://web.archive.org/web/20260730120000/https://social.example.net/@example-artist,2026-07-30
+M-204-839-112-441,M,Example Museum,website,https://museum.example.org/en/about/odp,museum.example.org,auto,active,2026-09-01T04:17:19Z,2026-06-02,,2026-06-02
+M-771-455-002-118,M,Example Regional Museum,website,https://regional.example.org/odp,regional.example.org,auto,unreachable,2026-09-01T04:17:26Z,2026-05-19,,2026-05-19
+P-001-293-847-119,P,Example Expertise Institute,website,https://institute.example.org/verification,institute.example.org,manual,unverifiable,,2026-08-21,https://web.archive.org/web/20260821090000/https://institute.example.org/verification,2026-08-21

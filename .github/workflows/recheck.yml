@@ -1,0 +1,39 @@
+name: recheck
+
+# Re-reads each organization's own /.well-known/odp.json and writes the result back.
+# Daily, because a row that nobody re-reads is a claim about the past.
+
+on:
+  schedule:
+    - cron: "10 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recheck
+  cancel-in-progress: false
+
+jobs:
+  recheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: node tools/recheck.mjs
+      - run: node tools/build.mjs
+      - run: node tools/validate.mjs
+      - name: Commit any change
+        run: |
+          if git diff --quiet; then
+            echo "no change"
+            exit 0
+          fi
+          git config user.name "odp-directory-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "recheck: refresh directory statuses"
+          git push

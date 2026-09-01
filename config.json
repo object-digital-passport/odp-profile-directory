@@ -1,0 +1,10 @@
+{
+  "formatVersion": 1,
+  "specLine": "0.6",
+  "chainId": 137,
+  "network": "polygon-mainnet",
+  "registryAddress": "0x012aC6393464A73EC16131D701ff2e000695b91b",
+  "csvFile": "odp-directory-v0.6.csv",
+  "unreachableAfterConsecutiveFailures": 3,
+  "manualEntryStaleAfterDays": 183
+}

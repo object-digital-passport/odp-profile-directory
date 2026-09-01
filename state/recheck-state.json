@@ -1,0 +1,30 @@
+{
+  "B-029-384-751-224": {
+    "consecutiveFailures": 0,
+    "everFound": true,
+    "lastResult": "OK",
+    "lastDetail": "",
+    "lastCheckedAt": "2026-09-01T04:17:00Z"
+  },
+  "B-118-002-940-333": {
+    "consecutiveFailures": 0,
+    "everFound": true,
+    "lastResult": "MISSING",
+    "lastDetail": "endpoint served, B-118-002-940-333 not listed for registry 0x012aC6393464A73EC16131D701ff2e000695b91b",
+    "lastCheckedAt": "2026-09-01T04:17:11Z"
+  },
+  "M-204-839-112-441": {
+    "consecutiveFailures": 0,
+    "everFound": true,
+    "lastResult": "OK",
+    "lastDetail": "",
+    "lastCheckedAt": "2026-09-01T04:17:19Z"
+  },
+  "M-771-455-002-118": {
+    "consecutiveFailures": 3,
+    "everFound": true,
+    "lastResult": "UNREADABLE",
+    "lastDetail": "HTTP 503",
+    "lastCheckedAt": "2026-09-01T04:17:26Z"
+  }
+}

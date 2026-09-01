@@ -1,0 +1,14 @@
+{
+  "name": "odp-profile-directory",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reference CSV format and example directory of published Object Digital Passport profile IDs",
+  "engines": { "node": ">=22.10.0" },
+  "scripts": {
+    "validate": "node tools/validate.mjs",
+    "build": "node tools/build.mjs",
+    "check": "node tools/validate.mjs && node tools/build.mjs --check",
+    "recheck": "node tools/recheck.mjs"
+  }
+}
