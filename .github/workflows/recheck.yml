@@ -1,11 +1,19 @@
 name: recheck
 
 # Re-reads each organization's own /.well-known/odp.json and writes the result back.
-# Daily, because a row that nobody re-reads is a claim about the past.
+#
+# Manual only in THIS repository. Its rows are synthetic — RFC 2606 documentation domains that
+# serve nothing — so a nightly run would mark every one of them unreachable within three days
+# and erase the worked example of each status this file exists to show. A directory holding real
+# entries wants the schedule below instead, because a row nobody re-reads is a claim about the
+# past:
+#
+#   on:
+#     schedule:
+#       - cron: "10 3 * * *"
+#     workflow_dispatch:
 
 on:
-  schedule:
-    - cron: "10 3 * * *"
   workflow_dispatch:
 
 permissions:
