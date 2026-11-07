@@ -1,0 +1,27 @@
+{
+  "formatVersion": 1,
+  "specLine": "0.7",
+  "chainId": 137,
+  "network": "polygon-mainnet",
+  "registryAddress": "0x3281492981dcd492cc2f7c17398134e1d3b5ca1f",
+  "source": "odp-directory-v0.7.csv",
+  "generatedAt": "2026-11-07T13:53:19Z",
+  "rowCount": 1,
+  "curation": "Rows are selected by the maintainer of this repository. Absence means nothing; presence is not a guarantee.",
+  "entries": [
+    {
+      "profileId": "B-589-489-785-290",
+      "profileType": "B",
+      "displayName": "inthere",
+      "evidenceKind": "website",
+      "evidenceUrl": "https://inthere.ge/.well-known/odp.json",
+      "evidenceHost": "inthere.ge",
+      "checkMethod": "auto",
+      "status": "unreachable",
+      "lastCheckedAt": "2026-11-07T13:53:19Z",
+      "lastVerifiedAt": "",
+      "archiveUrl": "",
+      "addedAt": "2026-11-07"
+    }
+  ]
+}

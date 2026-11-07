@@ -59,6 +59,12 @@ rules in [SPECIFICATION.md](docs/SPECIFICATION.md) exist so that a user moving b
 reading two different directories is not shown "unreachable" as an accusation in one and as
 silence in the other. Keep those, change everything else.
 
+## ODP 0.7 directory (initial candidate)
+
+`odp-directory-v0.7.csv` and `directory-v0.7.json` are a separate Polygon registry generation. The inthere entry is **unreachable**, based on the endpoint returning HTTP 404; it is not a verified identity. Never interpret absence or unavailability as wrongdoing. A listing is curation, not proof of identity or object authenticity.
+
+After publishing the matching `/.well-known/odp.json`, verify the evidence and run `node tools/recheck.mjs --v0.7`, `node tools/validate.mjs --v0.7` and `node tools/build.mjs --v0.7`. Publishing a directory row does not set a domain in the on-chain profile directory. Existing 0.6 examples stay separate.
+
 ## Files
 
 | File | What it is |

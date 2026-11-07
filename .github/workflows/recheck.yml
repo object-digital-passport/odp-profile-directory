@@ -34,6 +34,9 @@ jobs:
       - run: node tools/recheck.mjs
       - run: node tools/build.mjs
       - run: node tools/validate.mjs
+      - run: node tools/recheck.mjs --v0.7
+      - run: node tools/build.mjs --v0.7
+      - run: node tools/validate.mjs --v0.7
       - name: Commit any change
         run: |
           if git diff --quiet; then
