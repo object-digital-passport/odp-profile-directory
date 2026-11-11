@@ -19,7 +19,8 @@ import {
 
 const toolsDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(toolsDir, "..");
-const config = JSON.parse(readFileSync(join(toolsDir, "config.json"), "utf8"));
+const isV07 = process.argv.includes("--v0.7");
+const config = JSON.parse(readFileSync(join(toolsDir, isV07 ? "config-v0.7.json" : "config.json"), "utf8"));
 const csvPath = join(repoRoot, config.csvFile);
 const raw = readFileSync(csvPath, "utf8");
 const problems = [];

@@ -12,7 +12,8 @@ import { readDirectory } from "./csv.mjs";
 
 const toolsDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(toolsDir, "..");
-const config = JSON.parse(readFileSync(join(toolsDir, "config.json"), "utf8"));
+const isV07 = process.argv.includes("--v0.7");
+const config = JSON.parse(readFileSync(join(toolsDir, isV07 ? "config-v0.7.json" : "config.json"), "utf8"));
 const entries = readDirectory(join(repoRoot, config.csvFile));
 
 const instants = [];
@@ -36,7 +37,7 @@ const out = {
   entries,
 };
 
-const target = join(repoRoot, "directory.json");
+const target = join(repoRoot, config.outputFile ?? "directory.json");
 const next = `${JSON.stringify(out, null, 2)}\n`;
 if (process.argv.includes("--check")) {
   let current = "";

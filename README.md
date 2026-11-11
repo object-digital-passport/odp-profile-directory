@@ -59,6 +59,14 @@ rules in [SPECIFICATION.md](docs/SPECIFICATION.md) exist so that a user moving b
 reading two different directories is not shown "unreachable" as an accusation in one and as
 silence in the other. Keep those, change everything else.
 
+## ODP 0.7 directory (initial candidate)
+
+`odp-directory-v0.7.csv` and `directory-v0.7.json` are a separate Polygon registry generation. The inthere entry is **active** because its domain serves the matching profile ID and registry generation. This is not a verification of identity or object authenticity; the domain declaration in the on-chain profile must be checked separately. Never interpret absence or unavailability as wrongdoing.
+
+After publishing the matching `/.well-known/odp.json`, verify the evidence and run `node tools/recheck.mjs --v0.7`, `node tools/validate.mjs --v0.7` and `node tools/build.mjs --v0.7`. Publishing a directory row does not set a domain in the on-chain profile directory. Existing 0.6 examples stay separate.
+
+The scheduled recheck updates the real 0.7 entries daily; the synthetic 0.6 examples are excluded from scheduled runs. Consumers should compare the evidence host with the domain declared by the profile in its registry before displaying a name as belonging to that profile. The Apple app conservatively hides directory names when the evidence host cannot be matched to a declared domain, including social evidence and profiles without a supported domain field.
+
 ## Files
 
 | File | What it is |

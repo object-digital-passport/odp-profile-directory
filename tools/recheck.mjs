@@ -12,12 +12,14 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 import { readDirectory, writeDirectory } from "./csv.mjs";
+import { classifyEvidence, stateForEvidence } from "./recheck-evidence.mjs";
 
 const toolsDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(toolsDir, "..");
-const config = JSON.parse(readFileSync(join(toolsDir, "config.json"), "utf8"));
+const isV07 = process.argv.includes("--v0.7");
+const config = JSON.parse(readFileSync(join(toolsDir, isV07 ? "config-v0.7.json" : "config.json"), "utf8"));
 const csvPath = join(repoRoot, config.csvFile);
-const statePath = join(toolsDir, "state", "recheck-state.json");
+const statePath = join(toolsDir, "state", isV07 ? "recheck-state-v0.7.json" : "recheck-state.json");
 const dryRun = process.argv.includes("--dry-run");
 const only = process.argv.find((a) => a.startsWith("--only="))?.slice("--only=".length);
 
@@ -31,7 +33,7 @@ async function probe(entry) {
   let res;
   try {
     res = await fetch(url, {
-      redirect: "follow",
+      redirect: "error",
       headers: { accept: "application/json", "user-agent": "odp-profile-directory recheck" },
       signal: AbortSignal.timeout(15000),
     });
@@ -40,25 +42,31 @@ async function probe(entry) {
   }
   if (!res.ok) return { kind: "UNREADABLE", detail: `HTTP ${res.status}` };
 
+  if (!/^application\/json(?:\s*;|\s*$)/i.test(res.headers.get("content-type") ?? "")) return { kind: "UNREADABLE", detail: "response is not application/json" };
   let doc;
   try {
-    doc = JSON.parse(await res.text());
+    const reader = res.body?.getReader();
+    if (!reader) return { kind: "UNREADABLE", detail: "empty response" };
+    const chunks = []; let size = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > 1048576) { await reader.cancel(); return { kind: "UNREADABLE", detail: "response too large" }; }
+      chunks.push(value);
+    }
+    const body = new Uint8Array(size); let offset = 0;
+    for (const chunk of chunks) { body.set(chunk, offset); offset += chunk.byteLength; }
+    doc = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(body));
   } catch {
     // A single-page app answers 200 with HTML for every path. That is a site that does not
     // publish the endpoint, not a site that withdrew a profile.
     return { kind: "UNREADABLE", detail: "response is not JSON" };
   }
-  if (!Array.isArray(doc.profiles)) return { kind: "UNREADABLE", detail: "no profiles array" };
-
-  const wanted = config.registryAddress.toLowerCase();
-  const listed = doc.profiles.some((p) => {
-    const registry = (p.registry ?? doc.registry ?? "").toLowerCase();
-    const chainId = p.chainId ?? doc.chainId;
-    return p.profileId === entry.profileId && registry === wanted && Number(chainId) === config.chainId;
-  });
-  return listed
-    ? { kind: "OK" }
-    : { kind: "MISSING", detail: `endpoint served, ${entry.profileId} not listed for registry ${config.registryAddress}` };
+  const kind = classifyEvidence(doc, entry, config);
+  if (kind === "UNREADABLE") return { kind, detail: "unsupported or malformed profile data" };
+  return kind === "OK" ? { kind } :
+    { kind, detail: `endpoint served, ${entry.profileId} not listed for registry ${config.registryAddress}` };
 }
 
 let changed = 0;
@@ -67,8 +75,10 @@ for (const entry of entries) {
   if (entry.checkMethod !== "auto") continue;
   if (entry.status === "withdrawn") continue;
 
-  const s = (state[entry.profileId] ??= { consecutiveFailures: 0, everFound: false });
   const before = entry.status;
+  const previous = state[entry.profileId];
+  const s = (state[entry.profileId] = stateForEvidence(previous, entry, config));
+  if (s !== previous) entry.status = "unreachable";
   const result = await probe(entry);
   entry.lastCheckedAt = now;
 
