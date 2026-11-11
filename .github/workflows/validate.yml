@@ -26,3 +26,4 @@ jobs:
 
       - run: node tools/validate.mjs --v0.7
       - run: node tools/build.mjs --v0.7 --check
+      - run: node --test tools/recheck-evidence.test.mjs

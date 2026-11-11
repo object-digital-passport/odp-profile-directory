@@ -12,6 +12,7 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 import { readDirectory, writeDirectory } from "./csv.mjs";
+import { classifyEvidence, stateForEvidence } from "./recheck-evidence.mjs";
 
 const toolsDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(toolsDir, "..");
@@ -62,17 +63,10 @@ async function probe(entry) {
     // publish the endpoint, not a site that withdrew a profile.
     return { kind: "UNREADABLE", detail: "response is not JSON" };
   }
-  if (doc?.odp !== 1 || !Array.isArray(doc.profiles)) return { kind: "UNREADABLE", detail: "unsupported format or no profiles array" };
-
-  const wanted = config.registryAddress.toLowerCase();
-  const listed = doc.profiles.some((p) => {
-    const registry = (p.registry ?? doc.registry ?? "").toLowerCase();
-    const chainId = p.chainId ?? doc.chainId;
-    return p.profileId === entry.profileId && registry === wanted && Number(chainId) === config.chainId;
-  });
-  return listed
-    ? { kind: "OK" }
-    : { kind: "MISSING", detail: `endpoint served, ${entry.profileId} not listed for registry ${config.registryAddress}` };
+  const kind = classifyEvidence(doc, entry, config);
+  if (kind === "UNREADABLE") return { kind, detail: "unsupported or malformed profile data" };
+  return kind === "OK" ? { kind } :
+    { kind, detail: `endpoint served, ${entry.profileId} not listed for registry ${config.registryAddress}` };
 }
 
 let changed = 0;
@@ -81,7 +75,7 @@ for (const entry of entries) {
   if (entry.checkMethod !== "auto") continue;
   if (entry.status === "withdrawn") continue;
 
-  const s = (state[entry.profileId] ??= { consecutiveFailures: 0, everFound: false });
+  const s = (state[entry.profileId] = stateForEvidence(state[entry.profileId], entry, config));
   const before = entry.status;
   const result = await probe(entry);
   entry.lastCheckedAt = now;

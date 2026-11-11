@@ -65,6 +65,8 @@ silence in the other. Keep those, change everything else.
 
 After publishing the matching `/.well-known/odp.json`, verify the evidence and run `node tools/recheck.mjs --v0.7`, `node tools/validate.mjs --v0.7` and `node tools/build.mjs --v0.7`. Publishing a directory row does not set a domain in the on-chain profile directory. Existing 0.6 examples stay separate.
 
+The scheduled recheck updates the real 0.7 entries daily; the synthetic 0.6 examples are excluded from scheduled runs. Consumers should compare the evidence host with the domain declared by the profile in its registry before displaying a name as belonging to that profile.
+
 ## Files
 
 | File | What it is |

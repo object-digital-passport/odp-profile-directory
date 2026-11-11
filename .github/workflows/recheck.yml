@@ -2,18 +2,12 @@ name: recheck
 
 # Re-reads each organization's own /.well-known/odp.json and writes the result back.
 #
-# Manual only in THIS repository. Its rows are synthetic — RFC 2606 documentation domains that
-# serve nothing — so a nightly run would mark every one of them unreachable within three days
-# and erase the worked example of each status this file exists to show. A directory holding real
-# entries wants the schedule below instead, because a row nobody re-reads is a claim about the
-# past:
-#
-#   on:
-#     schedule:
-#       - cron: "10 3 * * *"
-#     workflow_dispatch:
+# The real v0.7 directory is rechecked daily. Synthetic v0.6 examples are
+# checked only on manual runs, so the scheduled job does not erase them.
 
 on:
+  schedule:
+    - cron: "10 3 * * *"
   workflow_dispatch:
 
 permissions:
@@ -32,8 +26,11 @@ jobs:
         with:
           node-version: 22
       - run: node tools/recheck.mjs
+        if: github.event_name == 'workflow_dispatch'
       - run: node tools/build.mjs
+        if: github.event_name == 'workflow_dispatch'
       - run: node tools/validate.mjs
+        if: github.event_name == 'workflow_dispatch'
       - run: node tools/recheck.mjs --v0.7
       - run: node tools/build.mjs --v0.7
       - run: node tools/validate.mjs --v0.7
@@ -45,6 +42,6 @@ jobs:
           fi
           git config user.name "odp-directory-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add -- odp-directory-v0.6.csv directory.json tools/state/recheck-state.json odp-directory-v0.7.csv directory-v0.7.json tools/state/recheck-state-v0.7.json
           git commit -m "recheck: refresh directory statuses"
           git push
