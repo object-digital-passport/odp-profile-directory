@@ -75,8 +75,10 @@ for (const entry of entries) {
   if (entry.checkMethod !== "auto") continue;
   if (entry.status === "withdrawn") continue;
 
-  const s = (state[entry.profileId] = stateForEvidence(state[entry.profileId], entry, config));
   const before = entry.status;
+  const previous = state[entry.profileId];
+  const s = (state[entry.profileId] = stateForEvidence(previous, entry, config));
+  if (s !== previous) entry.status = "unreachable";
   const result = await probe(entry);
   entry.lastCheckedAt = now;
 
