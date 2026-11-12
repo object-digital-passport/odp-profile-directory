@@ -5,7 +5,7 @@
   "network": "polygon-mainnet",
   "registryAddress": "0x3281492981dcd492cc2f7c17398134e1d3b5ca1f",
   "source": "odp-directory-v0.7.csv",
-  "generatedAt": "2026-11-08T07:49:38Z",
+  "generatedAt": "2026-11-12T10:57:11Z",
   "rowCount": 1,
   "curation": "Rows are selected by the maintainer of this repository. Absence means nothing; presence is not a guarantee.",
   "entries": [
@@ -18,7 +18,7 @@
       "evidenceHost": "inthere.ge",
       "checkMethod": "auto",
       "status": "active",
-      "lastCheckedAt": "2026-11-08T07:49:38Z",
+      "lastCheckedAt": "2026-11-12T10:57:11Z",
       "lastVerifiedAt": "",
       "archiveUrl": "",
       "addedAt": "2026-11-07"
